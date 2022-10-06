@@ -1,10 +1,18 @@
 <template>
 	<div class="layout-topbar">
 
-		<router-link to="/" class="layout-topbar-logo">
+		<!-- <router-link to="/" class="layout-topbar-logo">
 			<img alt="Logo" :src="topbarImage()" />
 			<span>Depot Report</span>
-		</router-link>
+		</router-link> -->
+
+		<Dropdown v-model="selectedLanguage" :options="languages" optionLabel="nama" placeholder="Pilih Bahasa" />
+
+		<span class="p-buttonset ml-2">
+			<Button label="Add" icon="pi pi-plus" class="p-button" @click="onShowLanguageEditor(true)"></Button>
+			<Button label="Edit" icon="pi pi-pencil" class="p-button"  @click="onShowLanguageEditor(false)"></Button>
+		</span>
+
 		<button class="p-link layout-menu-button layout-topbar-button" @click="onMenuToggle">
 			<i class="pi pi-bars"></i>
 		</button>
@@ -17,8 +25,8 @@
 		<ul class="layout-topbar-menu hidden lg:flex origin-top">
 			<li>
 				<div class="flex flex-column" style="text-align: right;">
-					<div><b>{{ getUserName() }}</b></div>
-					<div><small>{{ getDepotName() }}</small></div>
+					<div><b>{{ getName() }} {{ "(" + getUserName() + ")" }} </b></div>
+					<div><small> {{ getEmail() }} </small></div>
 				</div>
 			</li>
 			<li>
@@ -70,6 +78,18 @@
 			</template>
 		</Dialog>
 
+		<Dialog v-model:visible="showLanguageEditor" :style="{width: '450px'}" :header="languageEditorTitle" :modal="true" class="p-fluid">
+			<div class="field">
+				<label for="nama">Nama Bahasa</label>
+				<InputText id="nama" v-model.trim="editingLanguage.nama" required="true" autofocus :class="{'p-invalid': !editingLanguage.nama}" />
+			</div>
+			<template #footer>
+				<Button label="No" icon="pi pi-times" class="p-button-text" @click="onHideLanguageEditor"/>
+				<Button label="Remove" icon="pi pi-trash" class="p-button-text p-button-danger" @click="onRemoveLanguage" />
+				<Button label="Yes" icon="pi pi-check" class="p-button-text" @click="onConfirmLanguageEditor" />
+			</template>
+		</Dialog>
+
 	</div>
 </template>
 
@@ -80,12 +100,20 @@ import api from './api_service.js';
 export default {
 	data() {
 		return {
+			selectedLanguage: null,
+			languages : [],
+			languageEditorTitle : "",
+			showLanguageEditor: false,
+			newLanguage: false,
+			editingLanguage: {},
+
+
 			showEditProfile: false,
 			profile: {
 				id: "",
-				first_name: "",
-				last_name: "",
+				name: "",
 				username: "",
+				email: "",
 				password: "",
 				password_confirm: "",
 			},
@@ -95,6 +123,99 @@ export default {
 	},
     methods: {
 		//UI RELATED
+
+		//Language Editor
+		onShowLanguageEditor( newMode ){
+			this.newLanguage = newMode;
+			if( newMode ){
+				this.languageEditorTitle = "Tambah Bahasa";
+				this.editingLanguage = {};
+				console.log("TAMBAH");
+			}else{
+				if( this.selectedLanguage==null ){
+					this.$toast.add({severity:'error', summary: 'Kesalahan Prosedur', detail: "Pilih bahasa yang akan di-edit", life: 5000});							
+					return;
+				}
+				this.languageEditorTitle = "Edit Bahasa";
+				const mapKeys = ["id", "nama"];
+				for( let i=0; i<mapKeys.length; i++ ){
+					const key = mapKeys[i];
+					this.editingLanguage[key] = this.selectedLanguage[key];
+				}
+			}
+			this.showLanguageEditor = true;
+		},
+		onHideLanguageEditor(){
+			this.showLanguageEditor = false;
+		},
+		onConfirmLanguageEditor(){
+
+			if( !this.editingLanguage.nama ){
+				this.$toast.add({severity:'error', summary: 'Kesalahan Prosedur', detail: "Nama tidak boleh kosong", life: 5000});							
+			}
+
+			try{
+				let data = {};
+				const mapKeys = ["id", "nama"];
+				for( let i=0; i<mapKeys.length; i++ ){
+					const key = mapKeys[i];
+					if( this.newLanguage && key=="id" ){
+						continue;
+					}
+					data[key] = this.editingLanguage[key];
+				}
+
+				api.save( 'master/save', data ).then( (data) =>{
+					if( data.success ){
+						this.$toast.add({severity:'success', summary: 'Info', detail: data.message, life: 3000});
+						this.showLanguageEditor = false;
+						if( !this.newLanguage ){
+							const mapKeys = ["id", "nama"];
+							for( let i=0; i<mapKeys.length; i++ ){
+								const key = mapKeys[i];
+								this.selectedLanguage[key] = data.data[key];
+							}
+						}else{
+							this.languages.unshift( data.data );
+						}
+					}else{
+						this.$toast.add({severity:'error', summary: 'Error', detail: data.message, life: 5000});							
+					}
+				} );
+			}catch( e ){
+				this.$toast.add({severity:'error', summary: 'Ex - Error', detail: e.response.data.message, life: 5000});
+			}
+
+		},
+		onRemoveLanguage(){
+			this.$confirm.require({
+                target: event.currentTarget,
+                message: `Hapus bahasa "${this.selectedLanguage.nama}" ?`,
+                icon: 'pi pi-exclamation-triangle',
+                accept: () => {
+					this.showLanguageEditor = false;
+					try{
+						let idLama = this.selectedLanguage.id;
+						api.save( 'master/delete', [this.selectedLanguage.id] ).then( (data) =>{
+							if( data.success ){
+								this.$toast.add({severity:'success', summary: 'Info', detail: data.message, life: 3000});
+								this.showLanguageEditor = false;
+								this.languages = this.languages.filter(val => val.id !== idLama);
+								this.selectedLanguage = {};
+							}else{
+								this.$toast.add({severity:'error', summary: 'Error', detail: data.message, life: 5000});							
+							}
+						} );
+					}catch( e ){
+						this.$toast.add({severity:'error', summary: 'Ex - Error', detail: e.response.data.message, life: 5000});
+					}					
+                },
+                reject: () => {
+                }
+            });
+		},
+
+
         onMenuToggle(event) {
             this.$emit('menu-toggle', event);
         },
@@ -119,12 +240,35 @@ export default {
             });
 		},
 		onShowEditProfile(){
-			this.refreshProfileData();
-			this.showEditProfile = true;
+			this.$toast.add({severity:'info', summary: 'Info', detail: "Fitur ini belum tersedia", life: 4000});
+
+			// this.refreshProfileData();
+			// this.showEditProfile = true;
 		},
 		hideDialog(){
 			this.submitted = false;
 			this.showEditProfile = false;
+		},
+		loadLanguages(){
+			try{
+				api.get( 'master/data', { page:1, take:9999 } ).then( (data) =>{
+					const message = data.message;
+					const success = data.success;
+					const dataList = data.data;
+
+					if( success ){
+						this.languages = dataList;
+						if( this.languages.length>0 ){
+							if( this.selectedLanguage==null )
+								this.selectedLanguage = this.languages[0];
+						}
+					}else{
+						this.$toast.add({severity:'success', summary: 'Error', detail: message, life: 5000});
+					}
+				} );
+			}catch( e ){
+				this.$toast.add({severity:'success', summary: 'Error', detail: e.response.data.message, life: 5000});
+			}
 		},
 		
 		//BUSSINESS LOGIC RELATED
@@ -187,20 +331,15 @@ export default {
 
 			this.user = user;
 		},
-		getUserName(){
-			return this.user.first_name + " " + this.user.last_name;
+		getName(){
+			return this.user.name ;
 		},
-		getDepotName(){
-			let result = "";
-			if(this.user.depot ){
-				result += this.user.depot.nama;
-			}
-			if( this.user.grup ){
-				result += " ( " + this.user.grup + " )"; 
-			}
-			return result;
-		}
-
+		getUserName(){
+			return this.user.username;
+		},
+		getEmail(){
+			return this.user.email;
+		},
     },
 	computed: {
 		darkTheme() {
@@ -209,6 +348,7 @@ export default {
 	},
 	async mounted() {
 		this.refreshProfileData();
+		this.loadLanguages();
 	}	
 }
 </script>

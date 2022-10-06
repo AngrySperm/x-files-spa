@@ -14,6 +14,11 @@ export default {
             myAxios.interceptors.response.use( function(response){
                 return response;
             }, function(error){
+                let responseURL = error.request.responseURL ?? "";
+
+                if( responseURL.endsWith("/login/") ){
+                    return error.response;
+                }
                 if( error.response.status==401 ){
 					store.dispatch( 'logout' );
                     window.location = '/#/login';
@@ -136,12 +141,19 @@ export default {
         await this.refreshToken();
 
         const token = store.getters.getToken; 
-        let body = {
-            "data": data
-        };
+        let body = data;
         const headers = { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token };
         const url = `${API_URL}/${fieldName}/`;
         return this.getAxios().post(url, JSON.stringify(body), { headers: headers } ).then(response => response.data);
+    },
+    async delete( fieldName, ids ){
+        await this.refreshToken();
+
+        const token = store.getters.getToken; 
+        let body = { "data" : ids };
+        const headers = { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token };
+        const url = `${API_URL}/${fieldName}/`;
+        return this.getAxios().delete(url, { headers: headers }, JSON.stringify(body),  ).then(response => response.data);
     },
 
 }

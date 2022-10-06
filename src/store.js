@@ -1,6 +1,6 @@
 import { createStore } from 'vuex';
 
-let tag = 'x-files-2206-'
+let tag = 'x-files-2210-'
 
 //grup: IT, OWNER, KADEPOT, KAWIL, ADMIN
 
@@ -8,8 +8,7 @@ const store = createStore({
 
     state: {
         user: null,
-        token: null,
-        tokenRefresh: null,
+        accessToken: null,
     },
 
     mutations: {
@@ -18,63 +17,45 @@ const store = createStore({
             state.user = user;
         },
 
-        setToken( state, token ){
-            localStorage.setItem( tag + 'token', token);
+        setAccessToken( state, token ){
+            localStorage.setItem( tag + 'access-token', token);
             state.token = token;
         },
-
-        setTokenRefresh( state, tokenRefresh ){
-            localStorage.setItem( tag + 'token-refresh', tokenRefresh);
-            state.tokenRefresh = tokenRefresh;
-        }
     },
 
     actions: {
-        login( {commit}, {token, tokenRefresh, user} ){
-            localStorage.setItem( tag + 'token', token);
-            localStorage.setItem( tag + 'token-refresh', tokenRefresh );
+        login( {commit}, {accessToken, user} ){
+            localStorage.setItem( tag + 'access-token', accessToken);
             localStorage.setItem( tag + 'user', JSON.stringify(user) );
-            commit( 'setToken', token );
+            commit( 'setAccessToken', accessToken );
             commit( 'setUser', JSON.stringify(user) );
-            commit( 'setTokenRefresh', tokenRefresh );
         },
 
         logout( {commit} ){
-            localStorage.setItem( tag + 'token', '');
-            localStorage.setItem( tag + 'token-refresh', '');
+            localStorage.setItem( tag + 'access-token', '');
             localStorage.setItem( tag + 'user', '');
-            commit( 'setToken', '' );
+            commit( 'setAccessToken', '' );
             commit( 'setUser', '' );
-            commit( 'setTokenRefresh', '' );
         }
     },
 
     getters: {
         isLoggedIn( state ){
-            state.token = '';
-            let localToken = localStorage.getItem( tag + 'token' );
+            state.accessToken = '';
+            let localToken = localStorage.getItem( tag + 'access-token' );
             if( localToken && localToken.length>0 ){
-                state.token = localToken;
+                state.accessToken = localToken;
             }
-            return !!state.token;
+            return !!state.accessToken;
         },
 
         getToken( state ){
-            state.token = '';
-            let localToken = localStorage.getItem( tag + 'token' );
+            state.accessToken = '';
+            let localToken = localStorage.getItem( tag + 'access-token' );
             if( localToken && localToken.length>0 ){
-                state.token = localToken;
+                state.accessToken = localToken;
             }
-            return state.token;
-        },
-
-        getTokenRefresh( state ){
-            state.tokenRefresh = '';
-            let localToken = localStorage.getItem( tag + 'token-refresh' );
-            if( localToken && localToken.length>0 ){
-                state.tokenRefresh = localToken;
-            }
-            return state.tokenRefresh;
+            return state.accessToken;
         },
 
         getUser( state ){

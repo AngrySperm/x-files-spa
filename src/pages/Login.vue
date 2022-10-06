@@ -58,17 +58,24 @@ export default {
 
             try{
                 await api.login( this.username, this.password ).then( (data) =>{
-                    const token = data.data.access;
-                    const tokenRefresh = data.data.refresh;
-                    let user = data.data.user;
+                    const token = data.access_token;
+                    const success = data.success;
+                    const message = data.message;
 
-					store.dispatch( 'login', { token: token, tokenRefresh: tokenRefresh, user: user} );
-                    this.$router.push("/");
+                    if( success ){
+                        let user = data.user;
+
+                        store.dispatch( 'login', { accessToken: token, user: user} );
+                        this.$router.push("/");
+                    }else{
+                        this.$toast.add({severity:'warn', summary: 'Login Gagal', detail:message, life: 3000});
+                    }
                 } );
-            }catch( e ){
-                if( e.response.status==400 ){
-                    this.$toast.add({severity:'warn', summary: 'Login Gagal', detail:'User id / password salah', life: 3000});
-                }
+            }catch( ex ){
+                // console.log( ex );
+                // if( ex.response.status==400 ){
+                //     this.$toast.add({severity:'warn', summary: 'Login Gagal', detail:'User id / password salah', life: 3000});
+                // }
             }
 
         },

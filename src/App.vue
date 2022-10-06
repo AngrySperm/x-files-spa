@@ -26,21 +26,17 @@ import AppTopBar from './AppTopbar.vue';
 import AppMenu from './AppMenu.vue';
 import AppConfig from './AppConfig.vue';
 import AppFooter from './AppFooter.vue';
-import store from './store.js';
-
-// import router from './router.js';
 
 export default {
     emits: ['change-theme'],
     data() {
-        let grup = null;
-        if( store.getters.getUser ){
-            grup = store.getters.getUser.grup;
-        }else{
-            this.$router.push({ name: 'login' });
-            // router.push( 'login' );
-            // window.location = '/#/login';
-        }
+        // if( store.getters.getUser ){
+        //     grup = store.getters.getUser.grup;
+        // }else{
+        //     this.$router.push({ name: 'login' });
+        //     // router.push( 'login' );
+        //     // window.location = '/#/login';
+        // }
 
         return {
 
@@ -53,100 +49,10 @@ export default {
                     label: 'Home',
                     items: [{
                         label: 'Dashboard', icon: 'pi pi-fw pi-home', to: '/'
+                        // label: 'Dashboard', icon: 'fa fa-users', to: '/master-wilayah'
+                        // items : []
                     }]
                 },
-				{
-					label: 'Laporan',
-					items: [
-                        {
-                            label: 'Biaya', icon: 'pi pi-fw pi-chart-bar',
-                            items: [
-                                {label: 'Biaya Listrik', icon: 'pi pi-fw pi-bolt', to: '/report-biaya-listrik'},
-                                {label: 'Biaya Air', icon: 'pi pi-fw pi-spinner', to: '/report-biaya-air'},
-                                {label: 'Biaya Telepon', icon: 'pi pi-fw pi-phone', to: '/report-biaya-telepon'},
-                                {label: 'Biaya Internet', icon: 'pi pi-fw pi-wifi', to: '/report-biaya-internet'},
-                            ]
-                        },
-                        // {
-                        //     label: 'Hasil D&P', icon: 'pi pi-fw pi-chart-bar',
-                        //     items: [
-                        //         {label: 'D&P Rokok', icon: 'pi pi-fw pi-book'},
-                        //         {label: 'D&P Kopi', icon: 'pi pi-fw pi-book'}
-                        //     ]
-                        // },
-                        // {
-                        //     label: 'Sisa Stok Rokok', icon: 'pi pi-fw pi-chart-bar',
-                        //     items: [
-                        //         {label: 'Stok Rokok', icon: 'pi pi-fw pi-book'},
-                        //         {label: 'Stok Kopi', icon: 'pi pi-fw pi-book'}
-                        //     ]
-                        // },
-                        // {
-                        //     label: 'Lain-Lain', icon: 'pi pi-fw pi-chart-bar',
-                        //     items: [
-                        //         {label: 'Transfer Ke Pusat', icon: 'pi pi-fw pi-book'},
-                        //         {label: 'Outlet Aktif', icon: 'pi pi-fw pi-book'},
-                        //         {label: 'Retur/Rusak/Usang', icon: 'pi pi-fw pi-book'}
-                        //     ]
-                        // },
-					]
-				},
-                {
-                    label: 'Input Data',
-					items: [
-                        {
-                            label: 'Biaya', icon: 'pi pi-fw pi-pencil',
-                            items: [
-                                {label: 'Biaya Listrik', icon: 'pi pi-fw pi-bolt', to: '/input-biaya-listrik'},
-                                {label: 'Biaya Air', icon: 'pi pi-fw pi-spinner', to: '/input-biaya-air'},
-                                {label: 'Biaya Telepon', icon: 'pi pi-fw pi-phone', to: '/input-biaya-telepon'},
-                                {label: 'Biaya Internet', icon: 'pi pi-fw pi-wifi', to: '/input-biaya-internet'},
-                            ]
-                        },
-                        // {
-                        //     label: 'Hasil D&P', icon: 'pi pi-fw pi-pencil',
-                        //     items: [
-                        //         {label: 'D&P Rokok', icon: 'pi pi-fw pi-book'},
-                        //         {label: 'D&P Kopi', icon: 'pi pi-fw pi-book'}
-                        //     ]
-                        // },
-                        // {
-                        //     label: 'Sisa Stok Rokok', icon: 'pi pi-fw pi-pencil',
-                        //     items: [
-                        //         {label: 'Stok Rokok', icon: 'pi pi-fw pi-book'},
-                        //         {label: 'Stok Kopi', icon: 'pi pi-fw pi-book'}
-                        //     ]
-                        // },
-                        // {
-                        //     label: 'Lain-Lain', icon: 'pi pi-fw pi-pencil',
-                        //     items: [
-                        //         {label: 'Transfer Ke Pusat', icon: 'pi pi-fw pi-book'},
-                        //         {label: 'Outlet Aktif', icon: 'pi pi-fw pi-book'},
-                        //         {label: 'Retur/Rusak/Usang', icon: 'pi pi-fw pi-book'}
-                        //     ]
-                        // },
-					]
-                },
-                ( grup!==null && ["IT"].indexOf(grup) > -1) ? 
-                {
-                    label: 'Master Data',
-                    items: [
-                        // {label: 'Kategori', icon: 'pi pi-fw pi-list'},
-                        {label: 'Wilayah', icon: 'pi pi-fw pi-table', to: '/master-wilayah'},
-                        {label: 'Depot', icon: 'pi pi-fw pi-th-large', to: '/master-depot'},
-                        {
-                            label: 'Setting', icon: 'pi pi-fw pi-cog',
-                            items: [
-                                {label: 'Grup User', icon: 'fa fa-users', to: '/master-grup-user'},
-                                {label: 'User', icon: 'pi pi-fw pi-android', to: '/master-user'},
-                                {label: 'Menu', icon: 'fa fas fa-bars', to: '/master-menu'},
-                                {label: 'Permission', icon: 'fa fas fa-lock', to: '/master-permission'},
-                                // {label: 'Group', icon: 'pi pi-fw pi-clone', to: '/master-group'},
-                                // {label: 'Permission', icon: 'pi pi-fw pi-shield', to: '/master-permission'},
-                            ]
-                        },
-                    ]
-                } : {} ,
             ]
         }
     },
