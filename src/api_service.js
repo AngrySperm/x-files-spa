@@ -153,7 +153,7 @@ export default {
         let body = { "data" : ids };
         const headers = { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token };
         const url = `${API_URL}/${fieldName}/`;
-        return this.getAxios().delete(url, { headers: headers }, JSON.stringify(body),  ).then(response => response.data);
+        return this.getAxios().delete(url, { headers: headers , data: JSON.stringify(body)},  ).then(response => response.data);
     },
 
 }

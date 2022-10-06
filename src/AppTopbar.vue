@@ -196,7 +196,7 @@ export default {
 					this.showLanguageEditor = false;
 					try{
 						let idLama = this.selectedLanguage.id;
-						api.save( 'master/delete', [this.selectedLanguage.id] ).then( (data) =>{
+						api.delete( 'master/delete', [this.selectedLanguage.id] ).then( (data) =>{
 							if( data.success ){
 								this.$toast.add({severity:'success', summary: 'Info', detail: data.message, life: 3000});
 								this.showLanguageEditor = false;
