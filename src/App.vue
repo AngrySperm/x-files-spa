@@ -3,7 +3,8 @@
 
         <AppTopBar @menu-toggle="onMenuToggle" />
         <div class="layout-sidebar" @click="onSidebarClick">
-            <AppMenu :model="menu" @menuitem-click="onMenuItemClick" />
+            <!-- <AppMenu :model="menu" @menuitem-click="onMenuItemClick" /> -->
+            <AppMenu @menuitem-click="onMenuItemClick" />
         </div>
 
         <div class="layout-main-container">
@@ -39,21 +40,25 @@ export default {
         // }
 
         return {
+            appLanguage: {
+                id: 0,
+                text: ""
+            },
 
             layoutMode: 'static',
             staticMenuInactive: false,
             overlayMenuActive: false,
             mobileMenuActive: false,
-            menu : [
-                {
-                    label: 'Home',
-                    items: [{
-                        label: 'Dashboard', icon: 'pi pi-fw pi-home', to: '/'
-                        // label: 'Dashboard', icon: 'fa fa-users', to: '/master-wilayah'
-                        // items : []
-                    }]
-                },
-            ]
+            // menu : [
+            //     {
+            //         label: 'Home',
+            //         items: [{
+            //             label: 'Dashboard', icon: 'pi pi-fw pi-home', command: () => console.log("JANCUK")
+            //             // label: 'Dashboard', icon: 'fa fa-users', to: '/master-wilayah'
+            //             // items : []
+            //         }]
+            //     },
+            // ]
         }
     },
     watch: {

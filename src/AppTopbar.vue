@@ -1,17 +1,20 @@
 <template>
 	<div class="layout-topbar">
-
+				
 		<!-- <router-link to="/" class="layout-topbar-logo">
 			<img alt="Logo" :src="topbarImage()" />
 			<span>Depot Report</span>
 		</router-link> -->
 
-		<Dropdown v-model="selectedLanguage" :options="languages" optionLabel="nama" placeholder="Pilih Bahasa" />
+		<ConfirmDialog></ConfirmDialog>
+		<Dropdown v-model="selectedLanguage" :options="languages" optionLabel="nama" style="min-width: 15em;"
+			placeholder="Pilih Bahasa" @contextmenu="onLanguageRightClick"/>
+		<ContextMenu ref="cmLanguage" :model="cmLanguageItems" />
 
-		<span class="p-buttonset ml-2">
+		<!-- <span class="p-buttonset ml-2">
 			<Button label="Add" icon="pi pi-plus" class="p-button" @click="onShowLanguageEditor(true)"></Button>
 			<Button label="Edit" icon="pi pi-pencil" class="p-button"  @click="onShowLanguageEditor(false)"></Button>
-		</span>
+		</span> -->
 
 		<button class="p-link layout-menu-button layout-topbar-button" @click="onMenuToggle">
 			<i class="pi pi-bars"></i>
@@ -96,10 +99,37 @@
 <script>
 import store from './store.js';
 import api from './api_service.js';
+// import { ref } from 'vue';
 
 export default {
+	props: {
+		appLanguage: {
+                id: Number,
+                text: String
+		},
+	},
 	data() {
 		return {
+			cmLanguageItems : [
+				{
+					label: "Add",
+					icon: "pi pi-plus",
+					command: () => this.onShowLanguageEditor(true)
+				},
+				{
+					label: "Edit",
+					icon: "pi pi-pencil",
+					command: () => this.onShowLanguageEditor(false)
+				},
+				{
+					separator: true,
+				},
+				{
+					label: "Delete",
+					icon: "pi pi-trash",
+					command: () => this.onRemoveLanguage()
+				}
+			],
 			selectedLanguage: null,
 			languages : [],
 			languageEditorTitle : "",
@@ -123,6 +153,9 @@ export default {
 	},
     methods: {
 		//UI RELATED
+		onLanguageRightClick(event){
+			this.$refs.cmLanguage.show(event);
+		},
 
 		//Language Editor
 		onShowLanguageEditor( newMode ){
@@ -191,6 +224,7 @@ export default {
 			this.$confirm.require({
                 target: event.currentTarget,
                 message: `Hapus bahasa "${this.selectedLanguage.nama}" ?`,
+				header: "Konfirmasi",
                 icon: 'pi pi-exclamation-triangle',
                 accept: () => {
 					this.showLanguageEditor = false;
@@ -229,6 +263,7 @@ export default {
 			this.$confirm.require({
                 target: event.currentTarget,
                 message: 'Log out dari aplikasi?',
+				header: "Konfirmasi",
                 icon: 'pi pi-info-circle',
                 acceptClass: 'p-button-danger',
                 accept: () => {

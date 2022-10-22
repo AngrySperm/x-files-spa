@@ -1,6 +1,6 @@
 <template>
 	<div class="layout-menu-container">
-		<AppSubmenu :items="model" class="layout-menu" :root="true" @menuitem-click="onMenuItemClick" @keydown="onKeyDown" />
+		<AppSubmenu :items="categories" class="layout-menu" :root="true" @menuitem-click="onMenuItemClick" @keydown="onKeyDown" />
 	</div>
 </template>
 
@@ -8,9 +8,14 @@
 import AppSubmenu from './AppSubmenu';
 
 export default {
-	props: {
-		model: Array
+	data() {
+		return {
+			categories :[]
+		}
 	},
+	// props: {
+	// 	model: Array
+	// },
     methods: {
         onMenuItemClick(event) {
             this.$emit('menuitem-click', event);

@@ -1,6 +1,5 @@
 <template>
     <Toast />
-    <ConfirmPopup></ConfirmPopup>
     <router-view></router-view>
 </template>
 
