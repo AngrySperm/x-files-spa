@@ -1,5 +1,6 @@
 <template>
 	<div class="layout-menu-container">
+		<h6>{{ $store.getters['storeApps/selectedLanguage'] }}</h6>
 		<AppSubmenu :items="categories" class="layout-menu" :root="true" @menuitem-click="onMenuItemClick" @keydown="onKeyDown" />
 	</div>
 </template>
@@ -10,7 +11,7 @@ import AppSubmenu from './AppSubmenu';
 export default {
 	data() {
 		return {
-			categories :[]
+			categories :[],
 		}
 	},
 	// props: {

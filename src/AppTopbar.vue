@@ -8,7 +8,7 @@
 
 		<ConfirmDialog></ConfirmDialog>
 		<Dropdown v-model="selectedLanguage" :options="languages" optionLabel="nama" style="min-width: 15em;"
-			placeholder="Pilih Bahasa" @contextmenu="onLanguageRightClick"/>
+			placeholder="Pilih Bahasa" @contextmenu="onLanguageRightClick" @change="onChangeLanguage($event)"/>
 		<ContextMenu ref="cmLanguage" :model="cmLanguageItems" />
 
 		<!-- <span class="p-buttonset ml-2">
@@ -99,7 +99,6 @@
 <script>
 import store from './store.js';
 import api from './api_service.js';
-// import { ref } from 'vue';
 
 export default {
 	props: {
@@ -155,6 +154,9 @@ export default {
 		//UI RELATED
 		onLanguageRightClick(event){
 			this.$refs.cmLanguage.show(event);
+		},
+		onChangeLanguage(event){
+			store.commit('storeApps/selectedLanguage', event.value );
 		},
 
 		//Language Editor
@@ -294,8 +296,10 @@ export default {
 					if( success ){
 						this.languages = dataList;
 						if( this.languages.length>0 ){
-							if( this.selectedLanguage==null )
+							if( this.selectedLanguage==null ){
 								this.selectedLanguage = this.languages[0];
+								store.commit('storeApps/selectedLanguage', this.selectedLanguage );
+							}
 						}
 					}else{
 						this.$toast.add({severity:'success', summary: 'Error', detail: message, life: 5000});

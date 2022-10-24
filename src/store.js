@@ -1,4 +1,5 @@
 import { createStore } from 'vuex';
+import storeApps from './stores/store_app.js';
 
 let tag = 'x-files-2210-'
 
@@ -9,6 +10,10 @@ const store = createStore({
     state: {
         user: null,
         accessToken: null,
+    },
+
+    modules: {
+        storeApps
     },
 
     mutations: {

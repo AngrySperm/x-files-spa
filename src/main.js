@@ -126,7 +126,10 @@ dom.watch();
 app.use(PrimeVue, { ripple: true, inputStyle: 'outlined' });
 app.use(ConfirmationService);
 app.use(ToastService);
+
+//stores
 app.use(store);
+
 app.use(router);
 app.use(print);
 
