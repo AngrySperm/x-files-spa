@@ -298,7 +298,7 @@ export default {
 						if( this.languages.length>0 ){
 							if( this.selectedLanguage==null ){
 								this.selectedLanguage = this.languages[0];
-								store.commit('storeApps/selectedLanguage', this.selectedLanguage );
+								store.commit('storeApps/selectedLanguage', this.languages[0] );
 							}
 						}
 					}else{
