@@ -11,92 +11,89 @@ const routes = [
         children: [
             {
                 path: '',
-                name: 'dashboard',
-                component: () => import('./components/Dashboard.vue')
-            },
-            {
-                path: '/master-wilayah',
-                name: 'wilayah',
-                component: () => import('./components/MasterWilayah.vue')
-            },
-            {
-                path: '/master-depot',
-                name: 'depot',
-                component: () => import('./components/MasterDepot.vue') 
-                // component: function(){
-                //     let valid = false;
-                //     if( valid ){
-                //         return import('./components/MasterDepot.vue');
-                //     }else{
-                //         return import('./components/ApiAccessError.vue');
-                //     }
-                // }
-            },
-            {
-                path: '/master-grup-user',
-                name: 'grup-user',
-                component: () => import('./components/MasterGrupUser.vue')
-            },
-            {
-                path: '/master-user',
-                name: 'user',
-                component: () => import('./components/MasterUser.vue')
-            },
-            {
-                path: '/master-group',
-                name: 'group',
-                component: () => import('./components/MasterGroup.vue')
-            },
-            {
-                path: '/master-permission',
-                name: 'permission',
-                component: () => import('./components/MasterPermission.vue')
-            },
-            {
-                path: '/master-menu',
-                name: 'menu',
-                component: () => import('./components/MasterMenu.vue')
-            },
-            {
-                path: '/input-biaya-listrik',
-                name: 'input_biaya_listrik',
-                component: () => import('./components/InputBiayaListrik.vue')
-            },
-            {
-                path: '/input-biaya-air',
-                name: 'input_biaya_air',
-                component: () => import('./components/InputBiayaAir.vue')
-            },
-            {
-                path: '/input-biaya-telepon',
-                name: 'input_biaya_telepon',
-                component: () => import('./components/InputBiayaTelepon.vue')
-            },
-            {
-                path: '/input-biaya-internet',
-                name: 'input_biaya_internet',
-                component: () => import('./components/InputBiayaInternet.vue')
-            },
-            {
-                path: '/report-biaya-listrik',
-                name: 'report_biaya_listrik',
-                component: () => import('./components/ReportBiayaListrik.vue')
-            },
-            {
-                path: '/report-biaya-air',
-                name: 'report_biaya_air',
-                component: () => import('./components/ReportBiayaAir.vue')
-            },
-            {
-                path: '/report-biaya-telepon',
-                name: 'report_biaya_telepon',
-                component: () => import('./components/ReportBiayaTelepon.vue')
-            },
-            {
-                path: '/report-biaya-internet',
-                name: 'report_biaya_internet',
-                component: () => import('./components/ReportBiayaInternet.vue')
-            },
+                name: 'snippet',
+                component: () => import('./components/Snippet.vue')
+            }
+            // {
+            //     path: '',
+            //     name: 'dashboard',
+            //     component: () => import('./components/Dashboard.vue')
+            // },
+            // {
+            //     path: '/master-wilayah',
+            //     name: 'wilayah',
+            //     component: () => import('./components/MasterWilayah.vue')
+            // },
+            // {
+            //     path: '/master-depot',
+            //     name: 'depot',
+            //     component: () => import('./components/MasterDepot.vue') 
+            // },
+            // {
+            //     path: '/master-grup-user',
+            //     name: 'grup-user',
+            //     component: () => import('./components/MasterGrupUser.vue')
+            // },
+            // {
+            //     path: '/master-user',
+            //     name: 'user',
+            //     component: () => import('./components/MasterUser.vue')
+            // },
+            // {
+            //     path: '/master-group',
+            //     name: 'group',
+            //     component: () => import('./components/MasterGroup.vue')
+            // },
+            // {
+            //     path: '/master-permission',
+            //     name: 'permission',
+            //     component: () => import('./components/MasterPermission.vue')
+            // },
+            // {
+            //     path: '/master-menu',
+            //     name: 'menu',
+            //     component: () => import('./components/MasterMenu.vue')
+            // },
+            // {
+            //     path: '/input-biaya-listrik',
+            //     name: 'input_biaya_listrik',
+            //     component: () => import('./components/InputBiayaListrik.vue')
+            // },
+            // {
+            //     path: '/input-biaya-air',
+            //     name: 'input_biaya_air',
+            //     component: () => import('./components/InputBiayaAir.vue')
+            // },
+            // {
+            //     path: '/input-biaya-telepon',
+            //     name: 'input_biaya_telepon',
+            //     component: () => import('./components/InputBiayaTelepon.vue')
+            // },
+            // {
+            //     path: '/input-biaya-internet',
+            //     name: 'input_biaya_internet',
+            //     component: () => import('./components/InputBiayaInternet.vue')
+            // },
+            // {
+            //     path: '/report-biaya-listrik',
+            //     name: 'report_biaya_listrik',
+            //     component: () => import('./components/ReportBiayaListrik.vue')
+            // },
+            // {
+            //     path: '/report-biaya-air',
+            //     name: 'report_biaya_air',
+            //     component: () => import('./components/ReportBiayaAir.vue')
+            // },
+            // {
+            //     path: '/report-biaya-telepon',
+            //     name: 'report_biaya_telepon',
+            //     component: () => import('./components/ReportBiayaTelepon.vue')
+            // },
+            // {
+            //     path: '/report-biaya-internet',
+            //     name: 'report_biaya_internet',
+            //     component: () => import('./components/ReportBiayaInternet.vue')
+            // },
         ]
     },
     {

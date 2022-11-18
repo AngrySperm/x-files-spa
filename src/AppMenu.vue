@@ -21,6 +21,7 @@
 <script>
 import AppSubmenu from './AppSubmenu';
 import api from './api_service.js';
+import store from './store.js';
 
 export default {
 	data() {
@@ -96,7 +97,7 @@ export default {
 						this.categories.forEach( (item) =>{
 							item.label = item.nama;
 							item.icon = '';
-							item.command = () => console.log(item.nama);
+							// item.command = () => console.log(item.nama);
 						});
 						this.itemsFirst.items = this.categories;
 					}else{
@@ -110,6 +111,9 @@ export default {
 
         onMenuItemClick(event) {
 			this.selectedCategory = event.item;
+			store.commit('storeApps/selectedCategory', event.item );
+			store.commit('storeApps/selectedSubCategory', null );
+			store.commit('storeApps/selectedSnippet', null );
             this.$emit('menuitem-click', event);
         },
 		onKeyDown(event) {
@@ -196,7 +200,7 @@ export default {
 		onRemoveCategory(){
 			this.$confirm.require({
                 target: event.currentTarget,
-                message: `Hapus bahasa "${this.selectedCategory.nama}" ?`,
+                message: `Hapus kategori "${this.selectedCategory.nama}" ?`,
 				header: "Konfirmasi",
                 icon: 'pi pi-exclamation-triangle',
                 accept: () => {
@@ -211,7 +215,7 @@ export default {
 								this.itemsFirst.items = this.itemsFirst.items.filter( val => val.id !== idLama);
 								this.selectedCategory = {};
 								// this.items.items = this.categories;
-								console.log(this.items);
+								// console.log(this.items);
 							}else{
 								this.$toast.add({severity:'error', summary: 'Error', detail: data.message, life: 5000});							
 							}

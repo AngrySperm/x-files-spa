@@ -157,6 +157,9 @@ export default {
 		},
 		onChangeLanguage(event){
 			store.commit('storeApps/selectedLanguage', event.value );
+			store.commit('storeApps/selectedCategory', null );
+			store.commit('storeApps/selectedSubCategory', null );
+			store.commit('storeApps/selectedSnippet', null );
 		},
 
 		//Language Editor

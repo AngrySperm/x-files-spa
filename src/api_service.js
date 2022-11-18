@@ -146,6 +146,17 @@ export default {
         const url = `${API_URL}/${fieldName}/`;
         return this.getAxios().post(url, JSON.stringify(body), { headers: headers } ).then(response => response.data);
     },
+    async saveForm( fieldName, data ){
+        await this.refreshToken();
+
+        const token = store.getters.getToken; 
+        let body = data;
+        const headers = { 'Authorization': 'Bearer ' + token };
+        const url = `${API_URL}/${fieldName}/`;
+        return this.getAxios().post(url, body, { headers: headers } ).then(response => {
+            return response.data;            
+        });
+    },
     async delete( fieldName, ids ){
         await this.refreshToken();
 

@@ -3,8 +3,11 @@
 
         <AppTopBar @menu-toggle="onMenuToggle" />
         <div class="layout-sidebar" @click="onSidebarClick">
-            <!-- <AppMenu :model="menu" @menuitem-click="onMenuItemClick" /> -->
             <AppMenu @menuitem-click="onMenuItemClick" />
+        </div>
+
+        <div class="layout-sidebar-2" @click="onSidebarClick">
+            <AppMenuSecondary @menuitem-click="onMenuItemClick" />
         </div>
 
         <div class="layout-main-container">
@@ -25,6 +28,7 @@
 
 import AppTopBar from './AppTopbar.vue';
 import AppMenu from './AppMenu.vue';
+import AppMenuSecondary from './AppMenuSecondary.vue';
 import AppConfig from './AppConfig.vue';
 import AppFooter from './AppFooter.vue';
 
@@ -161,6 +165,7 @@ export default {
     components: {
         'AppTopBar': AppTopBar,
         'AppMenu': AppMenu,
+        'AppMenuSecondary': AppMenuSecondary,
         'AppConfig': AppConfig,
         'AppFooter': AppFooter,
     }
