@@ -120,7 +120,9 @@ export default {
         onMenuItemClick(event) {
 			this.selectedSubCategory = event.item;
 			store.commit('storeApps/selectedSubCategory', event.item );
+			store.commit('storeApps/selectedSnippet', null );
             this.$emit('menuitem-click', event);
+			this.$router.push('/');
         },
 		onKeyDown(event) {
 			const nodeElement = event.target;

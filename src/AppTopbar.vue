@@ -160,6 +160,7 @@ export default {
 			store.commit('storeApps/selectedCategory', null );
 			store.commit('storeApps/selectedSubCategory', null );
 			store.commit('storeApps/selectedSnippet', null );
+			this.$router.push('/');
 		},
 
 		//Language Editor

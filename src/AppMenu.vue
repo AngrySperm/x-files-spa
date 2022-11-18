@@ -115,6 +115,7 @@ export default {
 			store.commit('storeApps/selectedSubCategory', null );
 			store.commit('storeApps/selectedSnippet', null );
             this.$emit('menuitem-click', event);
+			this.$router.push('/');
         },
 		onKeyDown(event) {
 			const nodeElement = event.target;

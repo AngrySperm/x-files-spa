@@ -1,49 +1,4 @@
-<template>
-	<div class="grid" @contextmenu="onRightClick">
-		<div class="col-12">
-			<Breadcrumb style="margin: 0 0 0.5rem 0" :home="{ icon: 'pi pi-home' }" :model="breadcrumbItems" />
-			<div class="card">
-				<DataView :value="snippets" layout="grid">
-					<template #grid="slotProps">
-						<div class="col-12 md:col-3" @contextmenu="onRightClickSnippet($event, slotProps)" >
-                            <div class="product-grid-item card">
-                                <div class="product-grid-item-content">
-                                    <img :src="slotProps.data.image" :alt="slotProps.data.nama"/>
-                                    <div class="product-name">{{slotProps.data.nama}}</div>
-                                    <div class="product-description">{{slotProps.data.keterangan}}</div>
-                                </div>
-                            </div>
-                        </div>
-					</template>
-				</DataView>
-			</div>
-		</div>
-	</div>
-	<ContextMenu ref="cm" :model="cmItems" />
-
-	<Dialog v-model:visible="showEditor" :style="{width: '450px'}" :header="editorTitle" :modal="true" class="p-fluid">
-		<div class="field">
-			<label for="nama">Judul</label>
-			<InputText id="nama" v-model.trim="editing.nama" required="true" autofocus :class="{'p-invalid': !editing.nama}" />
-		</div>
-		<div class="field">
-			<label for="keterangan">Keterangan</label>
-			<InputText id="keterangan" v-model.trim="editing.keterangan" required="true" autofocus :class="{'p-invalid': !editing.keterangan}" />
-		</div>
-		<div class="field">
-			<label for="image">Preview</label>
-			<FileUpload id="image" mode="basic" @select="onSelectFile" url="#" :customUpload="true" @uploader="()=>{}" :multiple="false" accept="image/*" />
-		</div>
-		<template #footer>
-			<Button label="No" icon="pi pi-times" class="p-button-text" @click="onHideEditor"/>
-			<Button label="Remove" icon="pi pi-trash" class="p-button-text p-button-danger" @click="onRemove" />
-			<Button label="Yes" icon="pi pi-check" class="p-button-text" @click="onConfirmEditor" />
-		</template>
-	</Dialog>
-
-</template>
-
-<style>
+<style scoped>
 	.card {
 		background: #ffffff;
 		padding: 2rem;
@@ -106,9 +61,56 @@
 
 </style>
 
+<template>
+	<div class="grid" @contextmenu="onRightClick">
+		<div class="col-12">
+			<Breadcrumb style="margin: 0 0 0.5rem 0" :home="{ icon: 'pi pi-home' }" :model="breadcrumbItems" />
+			<div class="card">
+				<DataView :value="snippets" layout="grid">
+					<template #grid="slotProps">
+						<div class="col-12 md:col-3" @contextmenu="onRightClickSnippet($event, slotProps)" @click="clickSnippet(slotProps)" >
+                            <div class="product-grid-item card">
+                                <div class="product-grid-item-content">
+                                    <img :src="slotProps.data.image" :alt="slotProps.data.nama"/>
+                                    <div class="product-name">{{slotProps.data.nama}}</div>
+                                    <div class="product-description">{{slotProps.data.keterangan}}</div>
+                                </div>
+                            </div>
+                        </div>
+					</template>
+				</DataView>
+			</div>
+		</div>
+	</div>
+	<ContextMenu ref="cm" :model="cmItems" />
+
+	<Dialog v-model:visible="showEditor" :style="{width: '450px'}" :header="editorTitle" :modal="true" class="p-fluid">
+		<div class="field">
+			<label for="nama">Judul</label>
+			<InputText id="nama" v-model.trim="editing.nama" required="true" autofocus :class="{'p-invalid': !editing.nama}" />
+		</div>
+		<div class="field">
+			<label for="keterangan">Keterangan</label>
+			<InputText id="keterangan" v-model.trim="editing.keterangan" required="true" autofocus :class="{'p-invalid': !editing.keterangan}" />
+		</div>
+		<div class="field">
+			<label for="image">Preview</label>
+			<FileUpload id="image" mode="basic" @select="onSelectFile" url="#" :customUpload="true" @uploader="()=>{}" :multiple="false" accept="image/*" />
+		</div>
+		<template #footer>
+			<Button label="No" icon="pi pi-times" class="p-button-text" @click="onHideEditor"/>
+			<Button label="Remove" icon="pi pi-trash" class="p-button-text p-button-danger" @click="onRemove" />
+			<Button label="Yes" icon="pi pi-check" class="p-button-text" @click="onConfirmEditor" />
+		</template>
+	</Dialog>
+
+</template>
+
+
+
 <script>
 import api from '../api_service.js';
-// import store from '../store.js';
+import store from '../store.js';
 
 export default {
 	data() {
@@ -126,75 +128,14 @@ export default {
 			editing: {},
 			selectedSnippet : null,
 			selectedFiles: null
-
-	// 		title: 'Total Biaya Telepon',
-	// 		apiPath: 'report/biaya',
-	// 		jenisBiaya: 'telepon',
-	// 		monthNames: [ 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember' ],
-
-	// 		wilayahTxt: "Wilayah",
-	// 		depotTxt: "Depot",
-
-	// 		// yearFrom: null,
-	// 		yearTo: null,
-
-	// 		selectedBagian: null,
-	// 		bagianOptions: null,
-
-	// 		selectedWilayah: null,
-	// 		filteredWilayahs: null,
-	// 		wilayahs: null,
-
-	// 		selectedDepot: null,
-	// 		filteredDepots: null,
-	// 		depots: null,
-
-	// 		showWilayah: true,
-
-	// 		datas: [],
-	// 		objectColumns: [],
-	// 		aliasColumns: [],
-	// 		mapTotals: [],
-
-	// 		totalAll: 0,
-
-	// 		chartDatas: {
-    //             labels: [],
-    //             datasets: []
-    //         },
-	// 		chartColors: [ '#42A5F5', '#FFA726', '#00bb7e', '#66BB6A', '#FFA726', '#495057', '#ebedef', '#ff0000', '#00ff00', '#0000ff',  ],
-	// 		basicOptions: {
-    //             plugins: {
-    //                 legend: {
-    //                     labels: {
-    //                         color: '#495057'
-    //                     }
-    //                 }
-    //             },
-    //             scales: {
-    //                 x: {
-    //                     ticks: {
-    //                         color: '#495057'
-    //                     },
-    //                     grid: {
-    //                         color: '#ebedef'
-    //                     }
-    //                 },
-    //                 y: {
-    //                     ticks: {
-    //                         color: '#495057'
-    //                     },
-    //                     grid: {
-    //                         color: '#ebedef'
-    //                     }
-    //                 }
-    //             }
-    //         },
 		}
 	},
-	// created() {
-	// 	// this.initFilters();
-	// },
+	mounted(){
+		this.language = this.$store.getters['storeApps/selectedLanguage'];
+		this.category = this.$store.getters['storeApps/selectedCategory'];
+		this.subCategory = this.$store.getters['storeApps/selectedSubCategory'];
+		this.updateViewBeadcrumb();	
+	},
 	computed:{
 		selectedLanguage(){
 			return this.$store.getters['storeApps/selectedLanguage'];
@@ -228,17 +169,11 @@ export default {
 			}
 		}
 	},
-	// async mounted() {
-	// 	this.loadWilayah();
-	// 	this.loadDepot();
-
-	// 	// this.yearFrom = new Date();
-	// 	this.yearTo = new Date();
-
-	// 	this.selectedBagian = this.wilayahTxt;
-	// 	this.bagianOptions = [ this.wilayahTxt, this.depotTxt ];
-	// },
 	methods: {
+		clickSnippet(snippetProxy) {
+			store.commit('storeApps/selectedSnippet', snippetProxy.data );
+			this.$router.push('/snippet-details');
+		},
 		updateViewContextMenu( add, edit, separator, del ){
 			this.cmItems = [];
 			if( add ){
@@ -268,7 +203,6 @@ export default {
 		},
 		onSelectFile(event){
 			this.selectedFiles = event.files;
-			// console.log( this.selectedFiles[0] );
 		},
 		loadSnippets( subCategoryId ){
 			try{
@@ -340,23 +274,6 @@ export default {
 			}
 
 			try{
-				// let data = {};
-				// const mapKeys = ["id", "nama", "keterangan" ];
-				// for( let i=0; i<mapKeys.length; i++ ){
-				// 	const key = mapKeys[i];
-				// 	if( this.isNew && key=="id" ){
-				// 		continue;
-				// 	}
-				// 	data[key] = this.editing[key];
-				// }
-				// data['sub_kategori_id'] = this.subCategory.id;
-				// if( this.selectedFiles && this.selectedFiles.length>0 ){
-				// 	data['image'] = this.selectedFiles[0];
-				// }
-				// if( !this.isNew ){
-
-				// }
-
 				let data = new FormData();
 				if( !this.isNew ){
 					data.append( "id", this.editing["id"]);
@@ -426,263 +343,7 @@ export default {
                 }
             });
 		},
-
-	// 	//UI RELATED METHODS
-	// 	loadWilayah(){
-	// 		let user = store.getters.getUser;
-	// 		let grup = user.grup;
-	// 		this.wilayahs = [];
-	// 		try{
-	// 			api.getMaster( 'wilayah', { first:0, rows:9999 }, { with_depot: "1" } ).then( (data) =>{
-	// 				if( grup=="IT" || grup=="OWNER" ){
-	// 					this.wilayahs = data.data;
-	// 				}else if( grup=="KAWIL" ){
-	// 					for( let i=0; i<data.data.length; i++ ){
-	// 						let wilayah = data.data[i];
-	// 						if( user.wilayah.id==wilayah.id ){
-	// 							this.wilayahs.push( wilayah );
-	// 						}
-	// 					}
-	// 				}else if( grup=="ADMIN" || grup=="KADEPOT" ){
-	// 					this.wilayahs = [];
-	// 				}
-
-	// 				if( this.wilayahs.length<=0 ){
-	// 					this.selectedBagian = this.bagianOptions[1];
-	// 					this.showWilayah = false;
-	// 				}else if( this.wilayahs.length==1 ){
-	// 					this.selectedWilayah = this.wilayahs[0];
-	// 				}
-	// 			} );
-	// 		}catch( e ){
-	// 			this.$toast.add({severity:'success', summary: 'Error', detail: e.response.data.message, life: 5000});
-	// 		}
-	// 	},
-	// 	loadDepot(){
-	// 		let user = store.getters.getUser;
-	// 		let grup = user.grup;
-	// 		this.depots = [];
-	// 		try{
-	// 			api.getMaster( 'depot', { first:0, rows:9999 } ).then( (data) =>{
-	// 				if( grup=="IT" || grup=="OWNER" ){
-	// 					this.depots = data.data;
-	// 				}else if( grup=="KAWIL" ){
-	// 					for( let i=0; i<data.data.length; i++ ){
-	// 						let depot = data.data[i];
-	// 						if( user.wilayah.id==depot.wilayah.id ){
-	// 							this.depots.push( depot );
-	// 						}
-	// 					}
-	// 				}else if( grup=="KADEPOT" || grup=="ADMIN" ){
-	// 					for( let i=0; i<data.data.length; i++ ){
-	// 						let depot = data.data[i];
-	// 						if( user.depot.id==depot.id ){
-	// 							this.depots.push( depot );
-	// 						}
-	// 					}
-	// 				}
-
-	// 				if( this.depots.length==1 ){
-	// 					this.selectedDepot = this.depots[0];
-	// 				}
-	// 			} );
-	// 		}catch( e ){
-	// 			this.$toast.add({severity:'success', summary: 'Error', detail: e.response.data.message, life: 5000});
-	// 		}
-	// 	},
-	// 	searchWilayah( event ){
-	// 		if (!event.query.trim().length) {
-	// 			this.filteredWilayahs = [...this.wilayahs];
-	// 		} else {
-	// 			this.filteredWilayahs = this.wilayahs.filter((wilayah) => {
-	// 				return wilayah.nama.toLowerCase().includes(event.query.toLowerCase());
-	// 			});
-	// 		}
-	// 	},
-	// 	getWilayahById( id ){
-	// 		for( let i=0; i<this.wilayahs.length; i++ ){
-	// 			let o = this.wilayahs[i];
-	// 			if( o.id == id ){
-	// 				return o;
-	// 			}
-	// 		}
-	// 		return null;
-	// 	},
-	// 	searchDepot( event ){
-	// 		if (!event.query.trim().length) {
-	// 			this.filteredDepots = [...this.depots];
-	// 		} else {
-	// 			this.filteredDepots = this.depots.filter((depot) => {
-	// 				return depot.nama.toLowerCase().includes(event.query.toLowerCase());
-	// 			});
-	// 		}
-	// 	},
-	// 	getDepotById( id ){
-	// 		for( let i=0; i<this.depots.length; i++ ){
-	// 			let o = this.depots[i];
-	// 			if( o.id == id ){
-	// 				return o;
-	// 			}
-	// 		}
-	// 		return null;
-	// 	},
-	// 	changeBagian(){
-	// 		this.showWilayah = ( this.selectedBagian==this.wilayahTxt );
-	// 	},
-	// 	formatNumber(value) {
-	// 		if( value ){
-	// 			let total = value.toString(),
-	// 				sisa    = total.length % 3,
-	// 				rupiah  = total.substr(0, sisa),
-	// 				ribuan  = total.substr(sisa).match(/\d{3}/g);
-						
-	// 			if (ribuan) {
-	// 				let separator = sisa ? ',' : '';
-	// 				rupiah += separator + ribuan.join(',');
-	// 			}
-	// 			return rupiah;
-	// 		}
-	// 		return '-';
-    //     },
-	// 	getTitle(){
-	// 		let year = "";
-	// 		if( this.yearTo ){
-	// 			year = this.yearTo.getFullYear();
-	// 		}
-	// 		let lokasi = "";
-	// 		if( this.showWilayah ){
-	// 			if( this.selectedWilayah && this.selectedWilayah.nama ){
-	// 				lokasi = this.selectedWilayah.nama;
-	// 				if( this.selectedWilayah && this.selectedWilayah.depots && this.selectedWilayah.depots.length>0 ){
-	// 					lokasi += " (Total " + this.selectedWilayah.depots.length + " Depot)";
-	// 				}
-	// 			}
-	// 		}
-	// 		if( !this.showWilayah ){
-	// 			if( this.selectedDepot && this.selectedDepot.nama ){
-	// 				lokasi = this.selectedDepot.nama;
-	// 			}
-	// 		}
-	// 		return this.title + " Tahun " + year + " di " + lokasi;
-		// },
-
-	// 	//REPORT RELATED METHODS
-	// 	validateLoad(){
-	// 		if( this.showWilayah && !this.selectedWilayah ){
-	// 			this.$toast.add({severity:'info', summary: 'Kesalahan Prosedur', detail: "Wilayah tidak boleh kosong", life: 4000});
-	// 			return false;
-	// 		}
-	// 		if( this.showDepot && !this.selectedDepot ){
-	// 			this.$toast.add({severity:'info', summary: 'Kesalahan Prosedur', detail: "Depot tidak boleh kosong", life: 4000});
-	// 			return false;
-	// 		}
-
-	// 		// let yearFromValue = this.yearFrom.getFullYear();
-	// 		// let yearToValue = this.yearTo.getFullYear();
-	// 		// if( yearFromValue > yearToValue ){
-	// 		// 	this.$toast.add({severity:'info', summary: 'Kesalahan Prosedur', detail: "Tahun akhir < tahun awal", life: 4000});
-	// 		// 	return false;
-	// 		// }
-
-	// 		return true;
-	// 	},
-	// 	load(){
-	// 		const validated = this.validateLoad();
-
-	// 		if( validated ){
-	// 			this.datas = [];
-	// 			this.objectColumns = [];
-	// 			this.mapTotals = [];
-	// 			this.aliasColumns = [];
-	// 			this.chartDatas.labels = this.monthNames;
-	// 			this.chartDatas.datasets = [];
-	// 			this.totalAll = 0;
-
-	// 			// let yearFromValue = this.yearFrom.getFullYear();
-	// 			let yearToValue = this.yearTo.getFullYear();
-
-	// 			try{
-	// 				let params = {
-	// 					year_from: yearToValue,
-	// 					year_to: yearToValue,
-	// 					jenis_biaya: this.jenisBiaya,
-	// 				};
-
-	// 				if( this.showWilayah ){
-	// 					params['wilayah_id'] = this.selectedWilayah.id;
-	// 				}
-	// 				if( !this.showWilayah ){
-	// 					params['depot_id'] = this.selectedDepot.id;
-	// 				}
-
-	// 				api.get( `${this.apiPath}`, params).then( (data) =>{
-	// 					if( this.showWilayah ){
-	// 						for( let j=0; j<this.selectedWilayah.depots.length; j++ ){
-	// 							let depot = this.selectedWilayah.depots[j];
-	// 							this.objectColumns.push( depot );
-	// 							let alias = depot.kode.replace(" ", "_");
-	// 							this.aliasColumns.push( alias );
-	// 						}
-	// 					}
-	// 					if( !this.showWilayah ){
-	// 						let depot = this.selectedDepot;
-	// 						this.objectColumns.push( depot );
-	// 						let alias = depot.kode.replace(" ", "_");
-	// 						this.aliasColumns.push( alias );
-	// 					}
-
-	// 					for( let i=0; i<12; i++ ){
-	// 						let d = {
-	// 							month: this.monthNames[i],
-	// 						};
-	// 						let total = 0;
-	// 						for( let j=0; j<data.data.length; j++ ){
-	// 							let o = data.data[j];
-	// 							let tanggal_transaksi = new Date(o.tanggal_transaksi);
-
-	// 							if( tanggal_transaksi.getMonth()==i ){
-	// 								let depot_kode = o.depot_kode;
-	// 								let jumlah = o.jumlah;
-
-	// 								let depotAlias = depot_kode.replace(" ", "_");
-	// 								d[depotAlias] = jumlah;
-	// 								total += jumlah;
-	// 								this.mapTotals[depotAlias] = ( this.mapTotals[depotAlias]? this.mapTotals[depotAlias] : 0 ) + d[depotAlias];
-	// 							}
-	// 						}
-	// 						d['total'] = total;
-	// 						this.totalAll += total;
-	// 						this.datas.push( d );
-	// 					}
-
-	// 					for( let i=0; i<this.aliasColumns.length; i++ ){
-	// 						let alias = this.aliasColumns[i];
-	// 						let datasetData = [];
-	// 						for( let j=0; j<this.datas.length; j++ ){
-	// 							datasetData.push( this.datas[j][alias] );
-	// 						}
-	// 						let dataset = {
-	// 							label: this.objectColumns[i]? this.objectColumns[i].nama : "",
-	// 							data: datasetData,
-	// 							fill: false,
-	// 							borderColor: this.chartColors[i],
-	// 							tension: .4
-	// 						};
-	// 						this.chartDatas.datasets.push( dataset );
-	// 					}
-
-	// 				} );
-	// 			}catch( e ){
-	// 				this.$toast.add({severity:'success', summary: 'Error', detail: e.response.data.message, life: 5000});
-	// 			}
-
-
-	// 		}
-		},
-	// 	exportCSV() {
-	// 		this.$refs.dt.exportCSV();
-	// 	},
-	// }
+	},
 }
 </script>
 

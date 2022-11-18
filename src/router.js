@@ -13,7 +13,12 @@ const routes = [
                 path: '',
                 name: 'snippet',
                 component: () => import('./components/Snippet.vue')
-            }
+            },
+            {
+                path: '/snippet-details',
+                name: 'snippet-details',
+                component: () => import('./components/SnippetDetails.vue')
+            },
             // {
             //     path: '',
             //     name: 'dashboard',
