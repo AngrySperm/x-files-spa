@@ -94,6 +94,7 @@ import Tree from 'primevue/tree';
 import TreeSelect from 'primevue/treeselect';
 import TreeTable from 'primevue/treetable';
 import TriStateCheckbox from 'primevue/tristatecheckbox';
+import Vue3Prism from '@/custom/index.js';
 
 import CodeHighlight from './AppCodeHighlight';
 import BlockViewer from './BlockViewer';
@@ -131,6 +132,7 @@ app.use(store);
 
 app.use(router);
 app.use(print);
+app.use(Vue3Prism);
 
 app.directive('tooltip', Tooltip);
 app.directive('ripple', Ripple);
