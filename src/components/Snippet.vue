@@ -206,7 +206,7 @@ export default {
 		},
 		loadSnippets( subCategoryId ){
 			try{
-				api.get( 'snippet/data', { page:1, take:9999, filter: 'sub_kategori_id', value: subCategoryId } ).then( (data) =>{
+				api.get( 'snippet/data', { page:1, take:9999, filter: 'sub_kategori_id:=:' + subCategoryId, "order": "nama", "order_method" : "ASC" } ).then( (data) =>{
 					const message = data.message;
 					const success = data.success;
 					const dataList = data.data;

@@ -87,7 +87,7 @@ export default {
 		},
 		loadCategories( languageId ){
 			try{
-				api.get( 'kategori/data', { page:1, take:9999, filter: 'master_id', value: languageId } ).then( (data) =>{
+				api.get( 'kategori/data', { page:1, take:9999, "order": "nama", "order_method" : "ASC", filter: 'master_id:=:' + languageId} ).then( (data) =>{
 					const message = data.message;
 					const success = data.success;
 					const dataList = data.data;

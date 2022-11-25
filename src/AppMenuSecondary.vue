@@ -95,7 +95,7 @@ export default {
 		},
 		loadSubCategories( categoryId ){
 			try{
-				api.get( 'subkategori/data', { page:1, take:9999, filter: 'kategori_id', value: categoryId } ).then( (data) =>{
+				api.get( 'subkategori/data', { page:1, take:9999, filter: 'kategori_id:=:' + categoryId, "order": "nama", "order_method" : "ASC" } ).then( (data) =>{
 					const message = data.message;
 					const success = data.success;
 					const dataList = data.data;

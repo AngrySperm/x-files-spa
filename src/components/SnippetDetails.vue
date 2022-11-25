@@ -282,7 +282,7 @@ export default {
         // 		},
         loadSnippetDetails(snippetId) {
             try {
-                api.get("snippetdetail/data", { page: 1, take: 9999, filter: "snippet_id", value: snippetId }).then((data) => {
+                api.get("snippetdetail/data", { page: 1, take: 9999, filter: "snippet_id:=:" + snippetId }).then((data) => {
                     const message = data.message;
                     const success = data.success;
                     const dataList = data.data;

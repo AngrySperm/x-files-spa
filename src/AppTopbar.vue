@@ -169,7 +169,7 @@ export default {
 			if( newMode ){
 				this.languageEditorTitle = "Tambah Bahasa";
 				this.editingLanguage = {};
-				console.log("TAMBAH");
+				// console.log("TAMBAH");
 			}else{
 				if( this.selectedLanguage==null ){
 					this.$toast.add({severity:'error', summary: 'Kesalahan Prosedur', detail: "Pilih bahasa yang akan di-edit", life: 5000});							
@@ -292,7 +292,7 @@ export default {
 		},
 		loadLanguages(){
 			try{
-				api.get( 'master/data', { page:1, take:9999 } ).then( (data) =>{
+				api.get( 'master/data', { page:1, take:9999, "order": "nama", "order_method" : "ASC" } ).then( (data) =>{
 					const message = data.message;
 					const success = data.success;
 					const dataList = data.data;
